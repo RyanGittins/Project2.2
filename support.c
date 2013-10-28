@@ -27,13 +27,18 @@ int support_finalize(void) {
     return ret;
 }
 
-void print_footer(void) {
+void print_footer(double min_time, double max_time, double total_time, int num_cars) {
     if( FALSE == initialized ) {
         fprintf(stderr, "Warning: You forgot to call support_init() before calling print_footer()\n");
         support_init();
     }
 
     printf("--------+-----------------+-----------------+-----------------+--------------\n");
+	printf("Min.  Time : %12f msec\n", min_time);
+	printf("Avg.  Time : %12f msec\n", total_time / num_cars);
+	printf("Max.  Time : %12f msec\n", max_time);
+	printf("Total Time : %12f msec\n", total_time);
+	printf("--------+-----------------+-----------------+-----------------+--------------\n");
 }
 
 void print_header(void) {
@@ -44,7 +49,7 @@ void print_header(void) {
 
     printf("-------------------------------\n");
     printf("%7s | %15s | %15s | %15s | %10s\n", "Car ID", "Approach from", "Travel to", "State", "Time (msec)");
-    print_footer();
+    printf("--------+-----------------+-----------------+-----------------+--------------\n");
 }
 
 void print_state(int car_id, car_direction_t car_approach, car_direction_t car_dest, char * state, double timer) {

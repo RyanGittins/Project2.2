@@ -96,12 +96,15 @@ void print_header(void);
  * Print a footer to match output of print_state
  *
  * Arguments:
- *   None
+ *   min_time	= The amount of time the fastest car took
+ *   max_time	= The amount of time the slowest car took
+ *   total_time	= The amount of time it took for all cars to pass
+ *   num_cars	= The total number of card/threads
  *
  * Returns:
  *   Nothing
  */
-void print_footer(void);
+void print_footer(double min_time, double max_time, double total_time, int num_cars);
 
 /*
  * Print the state of the car.

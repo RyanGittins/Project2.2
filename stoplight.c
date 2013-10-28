@@ -11,6 +11,13 @@
 int main(int argc, char * argv[]) {
     int ret, i;
     pthread_t *car_threads = NULL;
+	struct timeval start;
+	struct timeval end;
+
+	semaphore_create(&NW, 1);
+	semaphore_create(&NE, 1);
+	semaphore_create(&SW, 1);
+	semaphore_create(&SE, 1);
 
     /*
      * Parse Command Line arguments
@@ -26,6 +33,11 @@ int main(int argc, char * argv[]) {
     srandom(time(NULL));
 
     /*
+     * Get time for total_time
+     */
+	gettimeofday(&start, NULL);
+	
+    /*
      * Create Car Thread(s)
      */
     car_threads = (pthread_t*)malloc(sizeof(pthread_t) * num_cars);
@@ -35,18 +47,25 @@ int main(int argc, char * argv[]) {
             return -1;
         }
     }
-
+	
     /*
      * Reap threads
      */
     for(i = 0; i < num_cars; ++i ) {
         pthread_join(car_threads[i], NULL);
     }
+	
+	/*
+	 * Calculate total_time
+	 */
+	gettimeofday(&end, NULL);
+
+	total_time = get_timeval_diff_as_double(start, &end);
 
     /*
      * Print timing information
      */
-    print_footer();
+    print_footer(min_time, max_time, total_time, num_cars);
 
     /*
      * Cleanup
@@ -58,6 +77,11 @@ int main(int argc, char * argv[]) {
     }
 
     support_finalize();
+	
+	semaphore_destroy(&NW);
+	semaphore_destroy(&NE);
+	semaphore_destroy(&SW);
+	semaphore_destroy(&SE);
 
     return 0;
 }
@@ -101,11 +125,36 @@ int parse_args(int argc, char **argv)
  */
 int go_straight(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
-    /* For example:
+	switch(car_approach)
+	{
+		case NORTH:
+			semaphore_wait(&NW);
+			semaphore_wait(&SW);
+			semaphore_post(&NW);
+			semaphore_post(&SW);
+			break;
+		case WEST:
+			semaphore_wait(&SW);
+			semaphore_wait(&SE);
+			semaphore_post(&SW);
+			semaphore_post(&SE);
+			break;
+		case EAST:
+			semaphore_wait(&NE);
+			semaphore_wait(&NW);
+			semaphore_post(&NE);
+			semaphore_post(&NW);
+			break;
+		case SOUTH:
+			semaphore_wait(&SE);
+			semaphore_wait(&NE);
+			semaphore_post(&SE);
+			semaphore_post(&NE);
+	}
+
     print_state(car_id, car_approach, car_dest,
                 "Go Straight",
                 get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
-    */
 
     return 0;
 }
@@ -116,11 +165,46 @@ int go_straight(car_direction_t car_approach, car_direction_t car_dest, int car_
  */
 int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
-    /* For example:
+	switch(car_approach)
+	{
+		case NORTH:
+			semaphore_wait(&NW);
+			semaphore_wait(&SW);
+			semaphore_post(&NW);
+			semaphore_wait(&SE);
+			semaphore_post(&SW);
+			semaphore_post(&SE);
+			break;
+		case WEST:
+			semaphore_wait(&SW);
+			semaphore_wait(&SE);
+			semaphore_post(&SW);
+			semaphore_wait(&NE);
+			semaphore_post(&SE);
+			semaphore_post(&NE);
+			break;
+		
+		case EAST:
+			semaphore_wait(&NE);
+			semaphore_wait(&NW);
+			semaphore_post(&NE);
+			semaphore_wait(&SW);
+			semaphore_post(&NW);
+			semaphore_post(&SW);
+			break;
+		
+		case SOUTH:
+			semaphore_wait(&SE);
+			semaphore_wait(&NE);
+			semaphore_post(&SE);
+			semaphore_wait(&NW);
+			semaphore_post(&NE);
+			semaphore_post(&NW);
+	}
+
     print_state(car_id, car_approach, car_dest,
                 "Go Left",
                 get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
-    */
 
     return 0;
 }
@@ -131,23 +215,108 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
  */
 int go_right(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
-    /* For example:
+	switch(car_approach)
+	{
+		case NORTH:
+			semaphore_wait(&NW);
+			semaphore_post(&NW);
+			break;
+		case WEST:
+			semaphore_wait(&SW);
+			semaphore_post(&SW);
+			break;
+		case EAST:
+			semaphore_wait(&NE);
+			semaphore_post(&NE);
+			break;
+		case SOUTH:
+			semaphore_wait(&SE);
+			semaphore_post(&SE);
+	}
+
     print_state(car_id, car_approach, car_dest,
                 "Go Right",
                 get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
-    */
 
     return 0;
+}
+
+int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, int car_id)
+{
+	switch(car_approach)
+	{
+		case NORTH:
+			switch(car_dest)
+			{
+				printf("NORTH!! %d\n", car_dest);
+				case NORTH:
+					return -1; // Error: Illegal U-Turn!
+				case WEST:
+					go_right(car_approach, car_dest, car_id); break;
+				case EAST:
+					go_left(car_approach, car_dest, car_id); break;
+				case SOUTH:
+					go_straight(car_approach, car_dest, car_id);
+			}
+			break;
+		case WEST:
+			switch(car_dest)
+			{
+				printf("WEST!!\n");
+				case NORTH:
+					go_left(car_approach, car_dest, car_id); break;
+				case WEST:
+					return -1; // Error: Illegal U-Turn!
+				case EAST:
+					go_straight(car_approach, car_dest, car_id); break;
+				case SOUTH:
+					go_right(car_approach, car_dest, car_id);
+			}
+			break;
+		
+		case EAST:
+			switch(car_dest)
+			{
+				printf("EAST!!\n");
+				case NORTH:
+					go_right(car_approach, car_dest, car_id); break;
+				case WEST:
+					go_straight(car_approach, car_dest, car_id); break;
+				case EAST:
+					return -1; // Error: Illegal U-Turn!
+				case SOUTH:
+					go_left(car_approach, car_dest, car_id); break;
+			}
+			break;
+		
+		case SOUTH:
+			switch(car_dest)
+			{
+				printf("SOUTH!!\n");
+				case NORTH:
+					go_straight(car_approach, car_dest, car_id); break;
+				case WEST:
+					go_left(car_approach, car_dest, car_id); break;
+				case EAST:
+					go_right(car_approach, car_dest, car_id);
+				case SOUTH:
+					return -1; // Error: Illegal U-Turn!
+			}
+	}
+
+	return 0;
 }
 
 /*
  * Approach intersection
  * param = Car Number (car_id)
  */
-void *approach_intersection(void *param) {
+void *approach_intersection(void *param)
+{
     int car_id = (intptr_t)param;
     car_direction_t car_approach;
     car_direction_t car_dest;
+	double car_time = 0;
 
     (void) car_id; /* To silence the compiler */
 
@@ -168,33 +337,43 @@ void *approach_intersection(void *param) {
 
     /*
      * Mark start time for the car (thread)
-     * - man gettimeofday
-     * TODO: Finish writing this section of the function
      */
+	gettimeofday(&per_thread_start_timer[car_id], NULL);
 
-    /* Print state example:
     print_state(car_id, car_approach, car_dest,
                 "Approach",
                 get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
-    */
+
+	/*
+	 * Start the attempt to secure the path through the intersection
+	 */
+	enter_intersection(car_approach, car_dest, car_id);
 
     /*
      * Mark leave time for car
-     * - man gettimeofday
-     * TODO: Finish writing this section of the function
      */
+	gettimeofday(&per_thread_end_timer[car_id], NULL);
+	
+	/*
+	 * Get the car's time, update min/max
+	 */
+	car_time = get_timeval_diff_as_double(per_thread_start_timer[car_id], &(per_thread_end_timer[car_id]));
 
-    /* Print state example:
     print_state(car_id, car_approach, car_dest,
                 "Leave",
-                get_timeval_diff_as_double(per_thread_start_timer[car_id], &(per_thread_end_timer[car_id])) );
-    */
+                car_time );
 
     /*
      * Record Global timing information before exiting
-     * TODO: Finish writing this section of the function
      */
-
+	
+	if(car_time < min_time || min_time == -1.0){
+		min_time = car_time;
+	}
+	
+	if(car_time > max_time || max_time == -1.0){
+		max_time = car_time;
+	}
 
     /*
      * All done
