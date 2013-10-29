@@ -25,19 +25,19 @@
 /*****************************
  * Global Variables
  *****************************/
-/*
- * Number of cars (threads) in the system
- */
+// Number of cars (threads) in the system
 int num_cars = 0;
 
+// Global statistics
 double min_time = -1.0;
 double max_time = -1.0;
 double total_time = -1.0;
 
+// Start and end times for each car
 struct timeval per_thread_start_timer[1000];
-
 struct timeval per_thread_end_timer[1000];
 
+// Semaphores to lock each quadrant
 semaphore_t NW;
 semaphore_t NE;
 semaphore_t SW;
