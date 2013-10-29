@@ -18,6 +18,8 @@ int main(int argc, char * argv[]) {
 	semaphore_create(&NE, 1);
 	semaphore_create(&SW, 1);
 	semaphore_create(&SE, 1);
+	
+	semaphore_create(&XX, 3);
 
     /*
      * Parse Command Line arguments
@@ -125,36 +127,42 @@ int parse_args(int argc, char **argv)
  */
 int go_straight(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
+	semaphore_wait(&XX);
+	
+	print_state(car_id, car_approach, car_dest,
+			"Go Straight",
+			get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
+	
 	switch(car_approach)
 	{
 		case NORTH:
 			semaphore_wait(&NW);
 			semaphore_wait(&SW);
+			semaphore_post(&XX);
 			semaphore_post(&NW);
 			semaphore_post(&SW);
 			break;
 		case WEST:
 			semaphore_wait(&SW);
 			semaphore_wait(&SE);
+			semaphore_post(&XX);
 			semaphore_post(&SW);
 			semaphore_post(&SE);
 			break;
 		case EAST:
 			semaphore_wait(&NE);
 			semaphore_wait(&NW);
+			semaphore_post(&XX);
 			semaphore_post(&NE);
 			semaphore_post(&NW);
 			break;
 		case SOUTH:
 			semaphore_wait(&SE);
 			semaphore_wait(&NE);
+			semaphore_post(&XX);
 			semaphore_post(&SE);
 			semaphore_post(&NE);
 	}
-
-    print_state(car_id, car_approach, car_dest,
-                "Go Straight",
-                get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
 
     return 0;
 }
@@ -165,6 +173,12 @@ int go_straight(car_direction_t car_approach, car_direction_t car_dest, int car_
  */
 int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
+	semaphore_wait(&XX);
+	
+    print_state(car_id, car_approach, car_dest,
+                "Go Left",
+                get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
+	
 	switch(car_approach)
 	{
 		case NORTH:
@@ -172,6 +186,7 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 			semaphore_wait(&SW);
 			semaphore_post(&NW);
 			semaphore_wait(&SE);
+			semaphore_post(&XX);
 			semaphore_post(&SW);
 			semaphore_post(&SE);
 			break;
@@ -180,6 +195,7 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 			semaphore_wait(&SE);
 			semaphore_post(&SW);
 			semaphore_wait(&NE);
+			semaphore_post(&XX);
 			semaphore_post(&SE);
 			semaphore_post(&NE);
 			break;
@@ -189,6 +205,7 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 			semaphore_wait(&NW);
 			semaphore_post(&NE);
 			semaphore_wait(&SW);
+			semaphore_post(&XX);
 			semaphore_post(&NW);
 			semaphore_post(&SW);
 			break;
@@ -198,13 +215,10 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 			semaphore_wait(&NE);
 			semaphore_post(&SE);
 			semaphore_wait(&NW);
+			semaphore_post(&XX);
 			semaphore_post(&NE);
 			semaphore_post(&NW);
 	}
-
-    print_state(car_id, car_approach, car_dest,
-                "Go Left",
-                get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
 
     return 0;
 }
@@ -215,6 +229,11 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
  */
 int go_right(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
+
+    print_state(car_id, car_approach, car_dest,
+                "Go Right",
+                get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
+
 	switch(car_approach)
 	{
 		case NORTH:
@@ -233,10 +252,6 @@ int go_right(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 			semaphore_wait(&SE);
 			semaphore_post(&SE);
 	}
-
-    print_state(car_id, car_approach, car_dest,
-                "Go Right",
-                get_timeval_diff_as_double(per_thread_start_timer[car_id], NULL));
 
     return 0;
 }

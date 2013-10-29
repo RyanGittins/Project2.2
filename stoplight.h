@@ -43,6 +43,11 @@ semaphore_t NE;
 semaphore_t SW;
 semaphore_t SE;
 
+// Semaphore to prevent more than three
+// cars which are not in a position to
+// exit from being in the intersection
+semaphore_t XX;
+
 /*****************************
  * Function Declarations
  *****************************/
