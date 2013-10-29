@@ -34,10 +34,10 @@ void print_footer(double min_time, double max_time, double total_time, int num_c
     }
 
     printf("--------+-----------------+-----------------+-----------------+--------------\n");
-	printf("Min.  Time : %12f msec\n", min_time);
-	printf("Avg.  Time : %12f msec\n", total_time / num_cars);
-	printf("Max.  Time : %12f msec\n", max_time);
-	printf("Total Time : %12f msec\n", total_time);
+	printf("Min.  Time :%12f msec\n", min_time);
+	printf("Avg.  Time :%12f msec\n", total_time / num_cars);
+	printf("Max.  Time :%12f msec\n", max_time);
+	printf("Total Time :%12f msec\n", total_time);
 	printf("--------+-----------------+-----------------+-----------------+--------------\n");
 }
 
