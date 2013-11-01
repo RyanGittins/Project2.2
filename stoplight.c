@@ -53,7 +53,7 @@ int main(int argc, char * argv[]) {
     /*
      * Print timing information
      */
-    print_footer(min_time, max_time, total_time, num_cars);
+    print_footer(1000 * min_time, 1000 * max_time, 1000 * total_time, num_cars);
 
     /*
      * Cleanup
