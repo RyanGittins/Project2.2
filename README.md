@@ -33,31 +33,47 @@ __Examples__
 This example runs the program with `./stoplight 5` to show how the program will execute with the same number of cars as the example in the project PDF.
 
 ````
-shell$ ./stoplight 5
+shell$ ./stoplight 10
 Number of Cars:   5
+Number of Cars:  10
 -------------------------------
  Car ID |   Approach from |       Travel to |           State | Time (msec)
 --------+-----------------+-----------------+-----------------+--------------
-      3 |           North |            West |        Approach |      0.001
-      3 |           North |            West |        Go Right |      0.067
-      3 |           North |            West |           Leave |      0.078
-      2 |           South |           North |        Approach |      0.000
-      2 |           South |           North |     Go Straight |      0.027
-      2 |           South |           North |           Leave |      0.039
-      0 |           North |            West |        Approach |      0.000
-      0 |           North |            West |        Go Right |      0.016
-      0 |           North |            West |           Leave |      0.026
-      1 |            West |           North |        Approach |      0.001
-      1 |            West |           North |         Go Left |      0.070
-      1 |            West |           North |           Leave |      0.087
-      4 |            East |           North |        Approach |      0.000
-      4 |            East |           North |        Go Right |      0.047
-      4 |            East |           North |           Leave |      0.064
+      5 |           South |            East |        Approach |      0.000
+      5 |           South |            East |        Go Right |      0.037
+      5 |           South |            East |           Leave |      0.043
+      7 |            East |           South |        Approach |      0.000
+      1 |            West |            East |        Approach |      0.000
+      1 |            West |            East |     Go Straight |      0.006
+      7 |            East |           South |         Go Left |      0.004
+      7 |            East |           South |           Leave |      0.014
+      1 |            West |            East |           Leave |      0.008
+      2 |           South |            East |        Approach |      0.001
+      2 |           South |            East |        Go Right |      0.004
+      2 |           South |            East |           Leave |      0.006
+      3 |            West |           South |        Approach |      0.001
+      3 |            West |           South |        Go Right |      0.004
+      3 |            West |           South |           Leave |      0.006
+      4 |           South |            East |        Approach |      0.001
+      4 |           South |            East |        Go Right |      0.016
+      4 |           South |            East |           Leave |      0.023
+      6 |           South |            East |        Approach |      0.001
+      6 |           South |            East |        Go Right |      0.003
+      6 |           South |            East |           Leave |      0.004
+      0 |            West |           North |        Approach |      0.000
+      0 |            West |           North |         Go Left |      0.016
+      0 |            West |           North |           Leave |      0.023
+      9 |            East |           North |        Approach |      0.000
+      9 |            East |           North |        Go Right |      0.011
+      9 |            East |           North |           Leave |      0.015
+      8 |           South |            West |        Approach |      0.000
+      8 |           South |            West |         Go Left |      0.003
+      8 |           South |            West |           Leave |      0.004
 --------+-----------------+-----------------+-----------------+--------------
-Min.  Time :    0.026000 msec
-Avg.  Time :    0.058800 msec
-Max.  Time :    0.087000 msec
-Total Time :    0.294000 msec
+Min.  Time :    0.004000 msec
+Avg.  Time :    0.014600 msec
+Max.  Time :    0.043000 msec
+Total Time :    0.146000 msec
 --------+-----------------+-----------------+-----------------+--------------
 
 ````
