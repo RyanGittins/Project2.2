@@ -26,7 +26,7 @@ __Test Cases__
 
 `./stoplight 100` This test will run the program with 100 cars (threads) to stress the program with a large number of threads.
 
-`python test.py 1000 > test.txt` This test will execute a python script which simply runs the command `./stoplight.c 10` 1000 times and outputs the information to test.txt for review.
+`python test.py 100000 > test.txt` This test will execute a python script which simply runs the command `./stoplight.c 10` 100000 times and outputs the information to test.txt for review.  This test was used to check for deadlock.  The test was able to run to completion without deadlocking at any point.  From this test we havea good indication that there is a low likely hood of the program ever deadlocking.
 
 __Examples__
 
@@ -65,7 +65,7 @@ Total Time :    0.294000 msec
 This example runs the program with `./stoplight 50` to show how the program will execute with a larger number of cars.  Note: The output was split in order to allow the output to fit on a single page. 
 
 ````
-phil@phil-U46E:~/Documents/cs441/Project2-2/Project2.2$ ./stoplight 50
+shell$ ./stoplight 50
 Number of Cars:  50
 -------------------------------
  Car ID |   Approach from |       Travel to |           State | Time (msec)
@@ -130,11 +130,11 @@ _After Coding_
 
 >Describe your solution and why it meets the goals of this part of the assignment, namely: does not deadlock, prevents accidents, addresses starvation, improves traffic flow, and fairness.
 
-The solution we chose to solve this problem was to handle each car on a case by case basis.  That is, depending on which direction a car would travel a different scenario would take place in order to ensure that accidents were prevented.  In order to do this we needed to use 5 semaphores total.  4 of the semaphores represented the 4 quadrants (NW, NE, SW, SE) of the intersection.  The other semaphore acted as lock to prevent more than 3 cars from ever being in the intersection at the same time.  The reason this is necessary is that at any point there is a car in every quadrant, depending on the car's direction, we have the possibility of deadlock.  
+The solution we chose to solve this problem was to handle each car on a case by case basis.  That is, depending on which direction a car would travel a different scenario would take place in order to ensure that accidents were prevented.  In order to do this we needed to use 5 semaphores total.  4 of the semaphores represented the 4 quadrants (NW, NE, SW, SE) of the intersection.  The other semaphore acted as lock to prevent more than 3 cars which are not in a position from which they can exit from ever being in the intersection at the same time.  The reason this is necessary is that at any point there is a car in every quadrant, depending on the car's direction, we have the possibility of deadlock if none of the cars are turning right.  
 
 Not only does this solution prevent deadlock, but it will also ensure that the intersection is fair and that no car is starved.  Since semaphores work on a first-in-first-out basis we can ensure that once a car is stopped and waiting at a certain point they will be waiting for the semaphore to signal that the intersection is clear.  This will be done in the order that the cars arrived at the intersection.
 
-Overall the traffic flow of this intersection is improved because of the implementation mentioned above.  As mentioned, we can allow up to 3 cars in the intersection at one time and still be certain that we are not impeding at least one of the cars.  This allows the intersection to handle cars at near maximum capacity.   
+Overall the traffic flow of this intersection is improved because of the implementation mentioned above.  As mentioned, depending on the destination of a given car we can allow at time 4 cars to be in the intersection at one time.  If there are 3 cars in the intersection and none of them will be turning right we will not allow anymore cars to enter the intersection.  This allows the intersection to handle cars at near maximum capacity while ensuring we do not have a deadlock.   
 
 
 
