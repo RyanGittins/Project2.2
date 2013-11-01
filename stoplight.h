@@ -61,8 +61,6 @@ int parse_args(int argc, char **argv);
  * This function implements passing straight through the intersection from
  * any direction.
  *
- * Write and comment this function
- *
  * Arguments:
  *   car_approach: Direction from which the car approaches the intersection.
  *   car_id: The car ID number for printing purposes
@@ -77,8 +75,6 @@ int go_straight(car_direction_t car_approach, car_direction_t car_dest, int car_
  * Go left
  * This function implements turning to the left through the intersection from
  * any direction.
- *
- * Write and comment this function
  *
  * Arguments:
  *   car_approach: Direction from which the car approaches the intersection.
@@ -95,8 +91,6 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id);
  * This function implements turning to the right through the intersection from
  * any direction.
  *
- * Write and comment this function
- *
  * Arguments:
  *   car_approach: Direction from which the car approaches the intersection.
  *   car_id: The car ID number for printing purposes
@@ -108,7 +102,18 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id);
 int go_right(car_direction_t car_approach, car_direction_t car_dest, int car_id);
 
 /*
- * TODO
+ * Enter intersection
+ * This function decides if a car is turning left, turning right, or going straight
+ * depending on its direction of approach and intended destination.
+ *
+ * Arguments:
+ *   car_approach: Direction from which the car approaches the intersection.
+ *   car_dest: Direction the car intends to go.
+ *   car_id: The car ID number for printing purposes
+ *
+ * Returns:
+ *    0 on Success
+ *   -1 on Error
  */
 int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, int car_id);
 
