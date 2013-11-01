@@ -110,6 +110,10 @@ int go_right(car_direction_t car_approach, car_direction_t car_dest, int car_id)
  *   car_approach: Direction from which the car approaches the intersection.
  *   car_dest: Direction the car intends to go.
  *   car_id: The car ID number for printing purposes
+ *
+ * Returns:
+ *    0 on Success
+ *   -1 on Error
  */
 int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, int car_id);
 
