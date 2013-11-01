@@ -16,7 +16,7 @@ To build this software, simply navigate to the directory containing the Makefile
 
 __Usage__
 
-To use this software, simply run the command `./stoplight <number-of-cars>`  Where items in '<>' are required parameters.  The argument <number-of-cars> is simply the number of cars you would like the program to use for simulation.  Each car is a separate  thread so this number is limited by each individual's hardware limitations.  The number of cars must be greater than 0.
+To use this software, simply run the command `./stoplight <number-of-cars>`.  Where items in '<>' are required parameters.  The argument <number-of-cars> is simply the number of cars you would like the program to use for simulation.  Each car is a separate  thread so this number is limited by each individual's hardware limitations.  The number of cars must be greater than 0.
 
 __Test Cases__
 
@@ -129,6 +129,12 @@ If there was a lack of a convention for how to behave at our intersection we wou
 _After Coding_
 
 >Describe your solution and why it meets the goals of this part of the assignment, namely: does not deadlock, prevents accidents, addresses starvation, improves traffic flow, and fairness.
+
+The solution we chose to solve this problem was to handle each car on a case by case basis.  That is, depending on which direction a car would travel a different scenario would take place in order to ensure that accidents were prevented.  In order to do this we needed to use 5 semaphores total.  4 of the semaphores represented the 4 quadrants (NW, NE, SW, SE) of the intersection.  The other semaphore acted as lock to prevent more than 3 cars from ever being in the intersection at the same time.  The reason this is necessary is that at any point there is a car in every quadrant, depending on the car's direction, we have the possibility of deadlock.  
+
+Not only does this solution prevent deadlock, but it will also ensure that the intersection is fair and that no car is starved.  Since semaphores work on a first-in-first-out basis we can ensure that once a car is stopped and waiting at a certain point they will be waiting for the semaphore to signal that the intersection is clear.  This will be done in the order that the cars arrived at the intersection.
+
+Overall the traffic flow of this intersection is improved because of the implementation mentioned above.  As mentioned, we can allow up to 3 cars in the intersection at one time and still be certain that we are not impeding at least one of the cars.  This allows the intersection to handle cars at near maximum capacity.   
 
 
 
