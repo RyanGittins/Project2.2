@@ -34,7 +34,6 @@ This example runs the program with `./stoplight 5` to show how the program will 
 
 ````
 shell$ ./stoplight 10
-Number of Cars:   5
 Number of Cars:  10
 -------------------------------
  Car ID |   Approach from |       Travel to |           State | Time (msec)
