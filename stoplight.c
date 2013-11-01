@@ -11,8 +11,6 @@
 int main(int argc, char * argv[]) {
     int ret, i;
     pthread_t *car_threads = NULL;
-	struct timeval start;
-	struct timeval end;
 
 	semaphore_create(&NW, 1);
 	semaphore_create(&NE, 1);
@@ -33,11 +31,6 @@ int main(int argc, char * argv[]) {
      * - random number generator
      */
     srandom(time(NULL));
-
-    /*
-     * Get time for total_time
-     */
-	gettimeofday(&start, NULL);
 	
     /*
      * Create Car Thread(s)
@@ -56,13 +49,6 @@ int main(int argc, char * argv[]) {
     for(i = 0; i < num_cars; ++i ) {
         pthread_join(car_threads[i], NULL);
     }
-	
-	/*
-	 * Calculate total_time
-	 */
-	gettimeofday(&end, NULL);
-
-	total_time = get_timeval_diff_as_double(start, &end);
 
     /*
      * Print timing information
@@ -267,9 +253,11 @@ int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, i
 				case NORTH:
 					return -1; // Error: Illegal U-Turn!
 				case WEST:
-					go_right(car_approach, car_dest, car_id); break;
+					go_right(car_approach, car_dest, car_id); 
+					break;
 				case EAST:
-					go_left(car_approach, car_dest, car_id); break;
+					go_left(car_approach, car_dest, car_id); 
+					break;
 				case SOUTH:
 					go_straight(car_approach, car_dest, car_id);
 			}
@@ -279,11 +267,13 @@ int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, i
 			{
 				printf("WEST!!\n");
 				case NORTH:
-					go_left(car_approach, car_dest, car_id); break;
+					go_left(car_approach, car_dest, car_id); 
+					break;
 				case WEST:
 					return -1; // Error: Illegal U-Turn!
 				case EAST:
-					go_straight(car_approach, car_dest, car_id); break;
+					go_straight(car_approach, car_dest, car_id); 
+					break;
 				case SOUTH:
 					go_right(car_approach, car_dest, car_id);
 			}
@@ -294,13 +284,16 @@ int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, i
 			{
 				printf("EAST!!\n");
 				case NORTH:
-					go_right(car_approach, car_dest, car_id); break;
+					go_right(car_approach, car_dest, car_id); 
+					break;
 				case WEST:
-					go_straight(car_approach, car_dest, car_id); break;
+					go_straight(car_approach, car_dest, car_id); 
+					break;
 				case EAST:
 					return -1; // Error: Illegal U-Turn!
 				case SOUTH:
-					go_left(car_approach, car_dest, car_id); break;
+					go_left(car_approach, car_dest, car_id); 
+					break;
 			}
 			break;
 		
@@ -309,9 +302,11 @@ int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, i
 			{
 				printf("SOUTH!!\n");
 				case NORTH:
-					go_straight(car_approach, car_dest, car_id); break;
+					go_straight(car_approach, car_dest, car_id); 
+					break;
 				case WEST:
-					go_left(car_approach, car_dest, car_id); break;
+					go_left(car_approach, car_dest, car_id); 
+					break;
 				case EAST:
 					go_right(car_approach, car_dest, car_id);
 				case SOUTH:
@@ -389,6 +384,9 @@ void *approach_intersection(void *param)
 	if(car_time > max_time || max_time == -1.0){
 		max_time = car_time;
 	}
+	
+	/* Increment total time */
+	total_time += car_time;
 
     /*
      * All done
