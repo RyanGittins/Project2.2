@@ -1,3 +1,7 @@
+##########################################
+# Authors: Phillip Sime and Ryan Gittins #
+##########################################
+
 from subprocess import call
 import sys
 
@@ -11,9 +15,10 @@ if len(sys.argv) > 1:
     a = int(sys.argv[1])
   except ValueError:
     # Print usage and exit if invalid number
-    print("Usage: python ./stoplight.c <number-of-cars>")
+    print("Usage: python ./stoplight.c <number-of-runs>")
     exit(-1)
     
 # Execute program with 10 cars for the provided number of times.
 for i in range(0, a):
   call(["./stoplight", "10"])
+  
