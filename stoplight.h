@@ -31,7 +31,7 @@ int num_cars = 0;
 // Global statistics
 double min_time = -1.0;
 double max_time = -1.0;
-double total_time = -1.0;
+double total_time = 0;
 
 // Start and end times for each car
 struct timeval per_thread_start_timer[1000];
