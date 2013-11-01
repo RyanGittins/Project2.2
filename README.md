@@ -134,7 +134,7 @@ The solution we chose to solve this problem was to handle each car on a case by 
 
 Not only does this solution prevent deadlock, but it will also ensure that the intersection is fair and that no car is starved.  Since semaphores work on a first-in-first-out basis we can ensure that once a car is stopped and waiting at a certain point they will be waiting for the semaphore to signal that the intersection is clear.  This will be done in the order that the cars arrived at the intersection.
 
-Overall the traffic flow of this intersection is improved because of the implementation mentioned above.  As mentioned, depending on the destination of a given car we can allow at time 4 cars to be in the intersection at one time.  If there are 3 cars in the intersection and none of them will be turning right we will not allow anymore cars to enter the intersection.  This allows the intersection to handle cars at near maximum capacity while ensuring we do not have a deadlock.   
+Overall the traffic flow of this intersection is improved because of the implementation mentioned above.  As mentioned, depending on the destination of a given car we can allow 4 cars to be in the intersection at one time.  However, if there are 3 cars in the intersection and none of them will be turning right we will not allow anymore cars to enter the intersection.  This allows the intersection to handle cars at near maximum capacity while ensuring we do not have a deadlock.   
 
 
 
