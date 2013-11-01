@@ -26,7 +26,7 @@ __Test Cases__
 
 `./stoplight 100` This test will run the program with 100 cars (threads) to stress the program with a large number of threads.
 
-`python test.py 10000 > test.txt` This test will execute a python script which simply runs the command `./stoplight.c 10` 1000 times and outputs the information to test.txt for review.
+`python test.py 1000 > test.txt` This test will execute a python script which simply runs the command `./stoplight.c 10` 1000 times and outputs the information to test.txt for review.
 
 __Examples__
 
