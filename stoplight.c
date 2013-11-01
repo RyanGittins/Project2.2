@@ -109,7 +109,6 @@ int parse_args(int argc, char **argv)
 
 /*
  * Go straight
- * TODO: Write this function
  */
 int go_straight(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
@@ -155,7 +154,6 @@ int go_straight(car_direction_t car_approach, car_direction_t car_dest, int car_
 
 /*
  * Go left
- * TODO: Write this function
  */
 int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
@@ -211,7 +209,6 @@ int go_left(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 
 /*
  * Go right
- * TODO: Write this function
  */
 int go_right(car_direction_t car_approach, car_direction_t car_dest, int car_id)
 {
@@ -249,7 +246,6 @@ int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, i
 		case NORTH:
 			switch(car_dest)
 			{
-				printf("NORTH!! %d\n", car_dest);
 				case NORTH:
 					return -1; // Error: Illegal U-Turn!
 				case WEST:
@@ -265,7 +261,6 @@ int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, i
 		case WEST:
 			switch(car_dest)
 			{
-				printf("WEST!!\n");
 				case NORTH:
 					go_left(car_approach, car_dest, car_id); 
 					break;
@@ -282,7 +277,6 @@ int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, i
 		case EAST:
 			switch(car_dest)
 			{
-				printf("EAST!!\n");
 				case NORTH:
 					go_right(car_approach, car_dest, car_id); 
 					break;
@@ -300,7 +294,6 @@ int enter_intersection(car_direction_t car_approach, car_direction_t car_dest, i
 		case SOUTH:
 			switch(car_dest)
 			{
-				printf("SOUTH!!\n");
 				case NORTH:
 					go_straight(car_approach, car_dest, car_id); 
 					break;
