@@ -26,7 +26,7 @@ __Test Cases__
 
 `./stoplight 100` This test will run the program with 100 cars (threads) to stress the program with a large number of threads.
 
-`python test.py 100000 > test.txt` This test will execute a python script which simply runs the command `./stoplight.c 10` 100000 times and outputs the information to test.txt for review.  This test was used to check for deadlock.  The test was able to run to completion without deadlocking at any point.  From this test we havea good indication that there is a low likely hood of the program ever deadlocking.
+`python test.py 100000 > test.txt` This test will execute a python script which simply runs the command `./stoplight.c 10` 100,000 times and outputs the information to test.txt for review.  The test was able to run to completion without deadlocking at any point.  From this test we have a good indication that there is a low likely hood of the program ever deadlocking.
 
 __Examples__
 
